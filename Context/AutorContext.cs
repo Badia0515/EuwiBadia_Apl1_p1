@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Euwinbadia_P1_Apl1.Context
 {
-    public class Context : DbContext
+    public class AutorContext : DbContext
     {
-        public Context(DbContextOptions<Context> options) : base(options)
+        public AutorContext(DbContextOptions<AutorContext> options) : base(options)
         {
         }
         public DbSet<Autores> Autor { get; set; }
