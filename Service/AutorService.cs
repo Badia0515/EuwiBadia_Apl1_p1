@@ -7,7 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Euwinbadia_P1_Apl1.Service
 {
-    public class Service(IDbContextFactory<AutorContext> contextFactory) : IService<Autores,int>
+    public class AutorService(IDbContextFactory<AutorContext> contextFactory) : IService<Autores,int>
     {
         public async Task<Autores?> Buscar(int id)
         {

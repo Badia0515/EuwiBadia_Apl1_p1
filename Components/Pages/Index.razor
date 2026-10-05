@@ -1,6 +1,6 @@
 ﻿@page "/"
 @rendermode InteractiveServer
-<PageTitle>Home</PageTitle>
+<PageTitle>Consultar Autores</PageTitle>
 
 <div class="container">
 
@@ -17,19 +17,72 @@
 
         <div class="d-flex gap-5">
 
-            <select style="width:200px">
-                <option>hola</option>
+            <select style="width:200px" @bind="Filtro">
+                <option>Id</option>
+                <option>Autor</option>
+                <option>Nacionalidad</option>
             </select>
 
-            <input type="text" placeholder="Buscar" />
-            <button class="btn btn-warning">Filtrar</button>
+            <input type="text" placeholder="Buscar" @bind="ValorFiltrar" />
+            <button class="btn btn-warning" @onclick="Filtrar">Filtrar</button>
 
         </div>
+        <QuickGrid Items="autor.AsQueryable()" class="table table-bordered">
+            <PropertyColumn Property="A=>A.Id" title="Id" Sortable="true"/>
+            <PropertyColumn Property="A => A.Nombre" title="Autor" Sortable="true" />
+            <PropertyColumn Property="A=>A.Nacionalidad" title="Nacionalidad" Sortable="true"/>
+            <PropertyColumn Property="A=>A.FechaDeNacimiento" title="Fecha de Nacimiento" Sortable="true"/>
+            <PropertyColumn Property="A => A.Sueldo" title="Sueldo" Sortable="true" />
+            <TemplateColumn title="Opciones">
+                <div>
+                    <button class="btn btn-warning"@onclick="()=>PaginaEditar(context.Id)">Editar</button>
+                    <button class="btn btn-danger" @onclick="() => Eliminar(context.Id)">Eliminar</button>
+                </div>
+            </TemplateColumn>
+        </QuickGrid>
 
     </div>
 
 </div>
 
 @code{
+
+    public List<Autores> autor { get; set; } = new();
+    public string ValorFiltrar { get; set; } = string.Empty;
+    public string Filtro { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        autor = await AutorService.GetList(A => true);
+    }
+    public async Task Filtrar()
+    {
+        if (ValorFiltrar.Trim() != "")
+        {
+            if (Filtro == "Autor")
+            {
+                autor = await AutorService.GetList(A => A.Nombre.Contains(ValorFiltrar));
+            }
+            if (Filtro == "Nacionalidad")
+            {
+                autor = await AutorService.GetList(A => A.Nombre.Contains(ValorFiltrar));
+            }
+            if (Filtro == "Id")
+            {
+                int.TryParse(ValorFiltrar, out int id);
+                autor = await AutorService.GetList(A => A.Id==id);
+            }
+        }
+    }
+    public async Task Eliminar(int id)
+    {
+        await AutorService.Eliminar(id);
+        autor = await AutorService.GetList(A => true);
+    }
+
+    public void PaginaEditar(int id)
+    {
+        
+    }
 
 }
