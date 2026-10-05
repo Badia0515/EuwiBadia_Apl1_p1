@@ -19,7 +19,5 @@ namespace Euwinbadia_P1_Apl1.Models;
 
         [Range(1,int.MaxValue, ErrorMessage ="No de ser menor que 1")]
         public int Sueldo { get; set; }
-
-
     }
 
