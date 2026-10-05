@@ -1,19 +1,66 @@
 ﻿@page "/counter"
 @rendermode InteractiveServer
 
-<PageTitle>Counter</PageTitle>
+<PageTitle>Registro</PageTitle>
 
-<h1>Counter</h1>
+<div class="container">
+    <div class="card border-3">
+        <EditForm Model="autor" OnValidSubmit="Guardar" FormName="Registro">
+            <DataAnnotationsValidator/>
+            <div>
+                <label>Nombre Autor</label>
+                <InputText @bind-Value="autor.Nombre"/>
+                <ValidationMessage class="text-bg-danger" For="@(()=>autor.Nombre)"/>
+            </div>
 
-<p role="status">Current count: @currentCount</p>
+            <div>
+                <label>Nacionalidad</label>
+                <InputText @bind-Value="autor.Nacionalidad" />
+                <ValidationMessage class="text-bg-danger" For="@(() => autor.Nacionalidad)" />
+            </div>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+            <div>
+                <label>Fecha de Nacimiento</label>
+                <InputText @bind-Value="autor.FechaDeNacimiento" />
+                <ValidationMessage class="text-bg-danger" For="@(() => autor.FechaDeNacimiento)" />
+            </div>
+
+            <div>
+                <label>Sueldo</label>
+                <InputNumber @bind-Value="autor.Sueldo" />
+                <ValidationMessage class="text-bg-danger" For="@(() => autor.Sueldo)" />
+            </div>
+
+            <div>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <button type="button" class="btn btn-warning" @onclick="PaginaConsultar">Consultar</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
 
 @code {
-    private int currentCount = 0;
 
-    private void IncrementCount()
+    public Autores autor { get; set; } = new();
+    public String MensajeError { get; set; } = string.Empty;
+
+    public async Task Guardar()
     {
-        currentCount++;
+        var Existe = await AutorService.GetList(A => A.Nombre == autor.Nombre);
+        if (Existe.Count > 0)
+        {
+            MensajeError = "Ya ese Autor esta Registrado";
+        }
+        else
+        {
+            await AutorService.Guardar(autor);
+        }
+
+    }
+    public void PaginaConsultar()
+    {
+        Navegacion.NavigateTo("/");
+
+        
     }
 }
