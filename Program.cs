@@ -10,8 +10,8 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 var ConStr = builder.Configuration.GetConnectionString("ConSrt");
-builder.Services.AddDbContextFactory<Context>(Opcion => Opcion.UseSqlServer(ConStr));
-builder.Services.AddScoped<Service>();
+builder.Services.AddDbContextFactory<AutorContext>(Opcion => Opcion.UseSqlServer(ConStr));
+builder.Services.AddScoped<AutorService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

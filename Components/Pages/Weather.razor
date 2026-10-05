@@ -1,64 +1,66 @@
-﻿@page "/weather"
+﻿@page "/weather/{id:int}"
 @rendermode InteractiveServer
 
-<PageTitle>Weather</PageTitle>
+<PageTitle>Modo Editar</PageTitle>
+<div class="container">
+    <div class="card border-3">
+        <EditForm Model="autorEditar" OnValidSubmit="EditaGuardar" FormName="Editar">
+            <DataAnnotationsValidator />
+            <div>
+                <label>Nombre Autor</label>
+                <InputText @bind-Value="autorEditar.Nombre" />
+                <ValidationMessage class="text-bg-danger" For="@(() => autorEditar.Nombre)" />
+            </div>
 
-<h1>Weather</h1>
+            <div>
+                <label>Nacionalidad</label>
+                <InputText @bind-Value="autorEditar.Nacionalidad" />
+                <ValidationMessage class="text-bg-danger" For="@(() => autorEditar.Nacionalidad)" />
+            </div>
 
-<p>This component demonstrates showing data.</p>
+            <div>
+                <label>Fecha de Nacimiento</label>
+                <InputText @bind-Value="autorEditar.FechaDeNacimiento" />
+                <ValidationMessage class="text-bg-danger" For="@(() => autorEditar.FechaDeNacimiento)" />
+            </div>
 
-@if (forecasts == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th aria-label="Temperature in Celsius">Temp. (C)</th>
-                <th aria-label="Temperature in Fahrenheit">Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+            <div>
+                <label>Sueldo</label>
+                <InputNumber @bind-Value="autorEditar.Sueldo" />
+                <ValidationMessage class="text-bg-danger" For="@(() => autorEditar.Sueldo)" />
+            </div>
+
+            <div>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <button type="button" class="btn btn-warning" @onclick="PaginaConsultar">Consultar</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
 
 @code {
-    private WeatherForecast[]? forecasts;
+    public List<Autores> autor { get; set; } = [];
+    public Autores autorEditar { get; set; } = new();
 
-    protected override async Task OnInitializedAsync()
+    [Parameter]
+    public int id{ get; set; }
+
+    public async Task Edita(int id)
     {
-        // Simulate asynchronous loading to demonstrate streaming rendering
-        await Task.Delay(500);
-
-        var startDate = DateOnly.FromDateTime(DateTime.Now);
-        var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
-        forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+        var Autor = await AutorService.Buscar(id);
+        if(Autor != null)
         {
-            Date = startDate.AddDays(index),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = summaries[Random.Shared.Next(summaries.Length)]
-        }).ToArray();
+            autorEditar = Autor;
+        }
     }
-
-    private class WeatherForecast
+    public async Task EditaGuardar()
     {
-        public DateOnly Date { get; set; }
-        public int TemperatureC { get; set; }
-        public string? Summary { get; set; }
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+        await AutorService.Editar(autorEditar);
+        autor = await AutorService.GetList(A => true);
+    }
+    public void PaginaConsultar()
+    {
+        Navegacion.NavigateTo("/");
+        
     }
 }
