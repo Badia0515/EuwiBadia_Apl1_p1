@@ -1,9 +1,11 @@
-﻿@page "/weather/{id:int}"
+﻿@page "/Edicion/{id:int}"
 @rendermode InteractiveServer
 
 <PageTitle>Modo Editar</PageTitle>
 <div class="container">
-    <div class="card border-3">
+    <h4>Modo Edicion</h4>
+    <div class="card border-3" style="width:400px">
+        
         <EditForm Model="autorEditar" OnValidSubmit="EditaGuardar" FormName="Editar">
             <DataAnnotationsValidator />
             <div>

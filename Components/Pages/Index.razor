@@ -1,4 +1,4 @@
-﻿@page "/Autores"
+﻿@page "/"
 @rendermode InteractiveServer
 <PageTitle>Consultar Autores</PageTitle>
 
@@ -40,7 +40,7 @@
                 </div>
             </TemplateColumn>
         </QuickGrid>
-
+        <h7>Cantidades de Autores: @autor.Count</h7>
     </div>
 
 </div>
@@ -65,7 +65,7 @@
             }
             if (Filtro == "Nacionalidad")
             {
-                autor = await AutorService.GetList(A => A.Nombre.Contains(ValorFiltrar));
+                autor = await AutorService.GetList(A => A.Nacionalidad.Contains(ValorFiltrar));
             }
             if (Filtro == "Id")
             {
@@ -82,12 +82,12 @@
 
     public void PaginaEditar(int id)
     {
-        Navegacion.NavigateTo($"/weather/{id}");
+        Navegacion.NavigateTo($"/Edicion/{id}");
         
     }
     public void PaginaCrear()
     {
-        Navegacion.NavigateTo("/counter");
+        Navegacion.NavigateTo("/Registro");
 
     }
 

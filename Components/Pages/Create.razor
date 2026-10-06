@@ -1,11 +1,11 @@
-﻿@page "/counter"
+﻿@page "/Registro"
 @rendermode InteractiveServer
 
 <PageTitle>Registro</PageTitle>
 
 <div class="container">
     <h4>Registro de Autores</h4>
-    <div class="card border-3"style="width:400px "  >
+    <div class="card border-3"style="width:400px">
         <EditForm Model="autor" OnValidSubmit="Guardar" FormName="Registro">
             <DataAnnotationsValidator/>
             <div>
@@ -61,6 +61,6 @@
     }
     public void PaginaConsultar()
     {
-        Navegacion.NavigateTo("/Autores");
+        Navegacion.NavigateTo("/");
     }
 }
