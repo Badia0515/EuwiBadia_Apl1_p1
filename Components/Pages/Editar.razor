@@ -31,7 +31,7 @@
                 <InputNumber @bind-Value="autorEditar.Sueldo" />
                 <ValidationMessage class="text-bg-danger" For="@(() => autorEditar.Sueldo)" />
             </div>
-
+             <H7 class="text-bg-success">@Mensaje</H7>
             <div>
                 <button type="submit" class="btn btn-primary">Guardar</button>
                 <button type="button" class="btn btn-warning" @onclick="PaginaConsultar">Consultar</button>
@@ -43,6 +43,7 @@
 @code {
     public List<Autores> autor { get; set; } = [];
     public Autores autorEditar { get; set; } = new();
+    public string Mensaje { get; set; } = string.Empty;
 
     [Parameter]
     public int id{ get; set; }
@@ -64,6 +65,7 @@
     {
         await AutorService.Editar(autorEditar);
         autor = await AutorService.GetList(A => true);
+        Mensaje = "Se Edito Correctamente";
     }
     public void PaginaConsultar()
     {

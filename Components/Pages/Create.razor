@@ -32,7 +32,7 @@
                 <ValidationMessage class="text-bg-danger" For="@(() => autor.Sueldo)" />
             </div>
             <H7 class="text-bg-danger">@MensajeError</H7>
-
+            <H7 class="text-bg-success">@Mensaje</H7>
             <div>
                 <button type="submit" class="btn btn-primary">Guardar</button>
                 <button type="button" class="btn btn-warning" @onclick="PaginaConsultar">Consultar</button>
@@ -45,6 +45,7 @@
 
     public Autores autor { get; set; } = new();
     public string MensajeError { get; set; } = string.Empty;
+    public string Mensaje { get; set; } = string.Empty;
 
     public async Task Guardar()
     {
@@ -56,6 +57,7 @@
         else
         {
             await AutorService.Guardar(autor);
+            Mensaje = "Se registro correctamente";
         }
 
     }
