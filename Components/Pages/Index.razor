@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿@page "/Autores"
 @rendermode InteractiveServer
 <PageTitle>Consultar Autores</PageTitle>
 
@@ -6,7 +6,7 @@
 
     <div class="d-flex justify-content-between ">
         <h4>Consultar</h4>
-        <button class="btn btn-primary">Crear</button>
+        <button class="btn btn-primary" @onclick="PaginaCrear">Crear</button>
     </div>
 
     <div class="card border-3">
@@ -84,6 +84,11 @@
     {
         Navegacion.NavigateTo($"/weather/{id}");
         
+    }
+    public void PaginaCrear()
+    {
+        Navegacion.NavigateTo("/counter");
+
     }
 
 }

@@ -45,6 +45,11 @@
     [Parameter]
     public int id{ get; set; }
 
+    protected override async Task OnInitializedAsync()
+    {
+        await Edita(id);
+    }
+
     public async Task Edita(int id)
     {
         var Autor = await AutorService.Buscar(id);

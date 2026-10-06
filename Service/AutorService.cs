@@ -48,7 +48,7 @@ namespace Euwinbadia_P1_Apl1.Service
         {
             if(!await Existe(entidad.Id))
             {
-                return await Guardar(entidad);
+                return await Insertar(entidad);
             }
             else
             {
