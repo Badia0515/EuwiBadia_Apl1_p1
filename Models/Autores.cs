@@ -14,8 +14,8 @@ namespace Euwinbadia_P1_Apl1.Models;
         [Required(ErrorMessage ="Debes de llenar el campo Nacionalidades")]
         public string Nacionalidad { get; set; }
 
-        [Required(ErrorMessage = "Debes de llenar el campo Nacionalidades")]
-        public string FechaDeNacimiento { get; set; }
+        [Required(ErrorMessage = "Debes de llenar el campo Fecha de Nacimiento")]
+        public DateTime FechaDeNacimiento { get; set; }
 
         [Range(1,int.MaxValue, ErrorMessage ="No debe ser menor que 1")]
         public int Sueldo { get; set; }
