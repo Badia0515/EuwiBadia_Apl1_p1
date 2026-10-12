@@ -6,7 +6,7 @@
 
     <div class="d-flex justify-content-between ">
         <h4>Consultar</h4>
-        <button class="btn btn-primary" @onclick="PaginaCrear">Crear</button>
+        <button class="btn btn-primary bi bi-plus-circle" @onclick="PaginaCrear">Crear</button>
     </div>
 
     <div class="card border-3">
@@ -24,25 +24,48 @@
             </select>
 
             <input type="text" placeholder="Buscar" @bind="ValorFiltrar" />
-            <button class="btn btn-warning" @onclick="Filtrar">Filtrar</button>
+            <button class="btn btn-warning bi bi-search" @onclick="Filtrar"></button>
 
         </div>
         <QuickGrid Items="autor.AsQueryable()" class="table table-bordered">
             <PropertyColumn Property="A=>A.Id" title="Id" Sortable="true"/>
             <PropertyColumn Property="A => A.Nombre" title="Autor" Sortable="true" />
             <PropertyColumn Property="A=>A.Nacionalidad" title="Nacionalidad" Sortable="true"/>
-            <PropertyColumn Property="A=>A.FechaDeNacimiento" title="Fecha de Nacimiento" Sortable="true"/>
+            <TemplateColumn Title="Fecha de Nacimiento">@context.FechaDeNacimiento</TemplateColumn>
             <PropertyColumn Property="A => A.Sueldo" title="Sueldo" Sortable="true" />
             <TemplateColumn title="Opciones">
                 <div>
-                    <button class="btn btn-warning"@onclick="()=>PaginaEditar(context.Id)">Editar</button>
-                    <button class="btn btn-danger" @onclick="() => Eliminar(context.Id)">Eliminar</button>
+                    <button class="btn btn-warning bi bi-pencil"@onclick="()=>PaginaEditar(context.Id)"></button>
+                    <button class="btn btn-danger bi bi-trash" data-bs-toggle="modal" data-bs-target="#Eliminar" @onclick="() => IdEliminar = context.Id"></button>
                 </div>
             </TemplateColumn>
         </QuickGrid>
-        <h7>Cantidades de Autores: @autor.Count</h7>
-    </div>
+        <div>
+          <h7>Cantidades de Autores: @autor.Count |</h7>
+          <h7 class="">Total de Sueldo: @autor.Sum(A => A.Sueldo)</h7>
+        </div>
 
+    </div>
+</div>
+<div class="modal fade" id="Eliminar" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Eliminacion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <h7>Seguro que quieres eliminar?</h7>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-bs-dismiss="modal"> Cancelar</button>
+                <button type="button" class="btn btn-danger" @onclick="Eliminar">Confirmar</button>
+
+            </div>
+        </div>
+    </div>
 </div>
 
 @code{
@@ -50,7 +73,7 @@
     public List<Autores> autor { get; set; } = new();
     public string ValorFiltrar { get; set; } = string.Empty;
     public string Filtro { get; set; } = string.Empty;
-
+    public int IdEliminar { get; set; }
     protected override async Task OnInitializedAsync()
     {
         autor = await AutorService.GetList(A => true);
@@ -74,9 +97,9 @@
             }
         }
     }
-    public async Task Eliminar(int id)
+    public async Task Eliminar()
     {
-        await AutorService.Eliminar(id);
+        await AutorService.Eliminar(IdEliminar);
         autor = await AutorService.GetList(A => true);
     }
 
